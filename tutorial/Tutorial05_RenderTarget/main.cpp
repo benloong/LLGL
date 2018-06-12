@@ -15,7 +15,7 @@
 //#define ENABLE_CUSTOM_MULTISAMPLING
 
 // Enable depth texture instead of depth buffer for render target
-#define ENABLE_DEPTH_TEXTURE
+//#define ENABLE_DEPTH_TEXTURE
 
 
 #ifndef ENABLE_MULTISAMPLING
@@ -196,7 +196,7 @@ public:
 
         // Create depth texture
         renderTargetDepthTex = renderer->CreateTexture(
-            LLGL::Texture2DDesc(LLGL::TextureFormat::DepthComponent, renderTargetSize.x, renderTargetSize.y)
+            LLGL::Texture2DDesc(LLGL::TextureFormat::DepthStencil, renderTargetSize.x, renderTargetSize.y)
         );
 
         #endif
@@ -206,7 +206,7 @@ public:
 
         // Attach depth-texture or depth-buffer to render-target
         #ifdef ENABLE_DEPTH_TEXTURE
-        renderTarget->AttachTexture(*renderTargetDepthTex, {});
+        //renderTarget->AttachTexture(*renderTargetDepthTex, {});
         #else
         renderTarget->AttachDepthBuffer(renderTargetSize);
         #endif

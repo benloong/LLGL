@@ -351,15 +351,27 @@ void D3D11RenderSystem::BuildGenericTexture2D(
     texDesc.Usage               = D3D11_USAGE_DEFAULT;
     texDesc.CPUAccessFlags      = 0;
 
-    #if 0
+    #if 1
     if (IsDepthStencilFormat(descD3D.format))
     {
         texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
         texDesc.MiscFlags = 0;
+        texDesc.MipLevels = 1;
+        if (descD3D.format == TextureFormat::DepthComponent) {
+            texDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+        }
+        else if (descD3D.format == TextureFormat::DepthStencil) {
+            texDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+        }
 
         D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
         {
-            srvDesc.Format                      = DXGI_FORMAT_R32_FLOAT;
+            if (descD3D.format == TextureFormat::DepthComponent) {
+                srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+            }
+            else {
+                srvDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+            }
             srvDesc.ViewDimension               = D3D11_SRV_DIMENSION_TEXTURE2D;
             srvDesc.Texture2D.MostDetailedMip   = 0;
             srvDesc.Texture2D.MipLevels         = 1;
